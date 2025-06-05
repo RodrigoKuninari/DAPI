@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface  DeviceRepository extends JpaRepository<Device, Long> {
+public interface DapiRepository extends JpaRepository<Device, Long> {
     List<Device> findByBrand(String brand);
     List<Device> findByState(State state);
 }

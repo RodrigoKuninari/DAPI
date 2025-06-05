@@ -1,0 +1,109 @@
+openapi: 3.0.1
+info:
+  title: DAPI
+  version: 1.0.0
+  description: REST API for managing devices
+servers:
+  - url: http://localhost:8080
+paths:
+  /devices:
+    get:
+      summary: Get all devices
+      responses:
+        '200':
+          description: List of devices
+    post:
+      summary: Create a new device
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+      responses:
+        '201':
+          description: Device created
+  /devices/{id}:
+    get:
+      summary: Get device by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Device found or empty object
+    post:
+      summary: Update device by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+      responses:
+        '200':
+          description: Updated device or message
+    delete:
+      summary: Delete device by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success or no changes message
+  /devices/brands/{brand}:
+    get:
+      summary: Get devices by brand
+      parameters:
+        - name: brand
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Devices matching brand
+  /devices/states/{state}:
+    get:
+      summary: Get devices by state
+      parameters:
+        - name: state
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [AVAILABLE, IN_USE, INACTIVE]
+      responses:
+        '200':
+          description: Devices matching state
+components:
+  schemas:
+    Device:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        brand:
+          type: string
+        state:
+          type: string
+          enum: [AVAILABLE, IN_USE, INACTIVE]
+        creationTime:
+          type: string
+          format: date-time
+          readOnly: true
