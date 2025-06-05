@@ -1,6 +1,21 @@
 services:
 
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: dapi
+      POSTGRES_USER: dapi_user
+      POSTGRES_PASSWORD: dapi_password
+    ports:
+      - "5432:5432"
+
   app:
     build: .
+    depends_on:
+      - db
     ports:
       - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/dapi
+      SPRING_DATASOURCE_USERNAME: dapi_user
+      SPRING_DATASOURCE_PASSWORD: dapi_password
